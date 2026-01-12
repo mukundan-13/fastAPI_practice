@@ -1,30 +1,18 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
+
+# ---------------- BLOG ----------------
 
 class BlogCreate(BaseModel):
     title: str
     body: str
-    class Config:
-        orm_mode = True
 
-class ShowBlog(BlogCreate):
-    class Config:
-        orm_mode = True
-
-# for fetching the title alone
-# class ShowBlog(BaseModel):
-#     title: str
-#     body:str
-
-#     class Config:
-#         orm_mode = True
+    model_config = {
+        "from_attributes": True
+    }
 
 
-# class BlogResponse(BlogCreate):
-#     id: int
-
-#     class Config:
-#         orm_mode = True
+# ---------------- USER ----------------
 
 class User(BaseModel):
     name: str
@@ -35,13 +23,18 @@ class User(BaseModel):
 class ShowUser(BaseModel):
     name: str
     email: str
-    blogs:List[BlogCreate]=[]
-    class Config:
-        orm_mode = True
+    blogs: List[BlogCreate] = []
+
+    model_config = {
+        "from_attributes": True
+    }
+
+
+# ---------------- BLOG RESPONSE ----------------
 
 class ShowBlog(BlogCreate):
-    title:str
-    body:str
-    creator:ShowUser
-    class Config:
-        orm_mode = True
+    creator: Optional[ShowUser] = None   # 🔥 THIS FIXES 500 ERROR
+
+    model_config = {
+        "from_attributes": True
+    }
