@@ -1,7 +1,6 @@
 from pydantic import BaseModel
 from typing import List, Optional
 
-# ---------------- BLOG ----------------
 
 class BlogCreate(BaseModel):
     title: str
@@ -11,8 +10,6 @@ class BlogCreate(BaseModel):
         "from_attributes": True
     }
 
-
-# ---------------- USER ----------------
 
 class User(BaseModel):
     name: str
@@ -29,12 +26,21 @@ class ShowUser(BaseModel):
         "from_attributes": True
     }
 
-
-# ---------------- BLOG RESPONSE ----------------
-
 class ShowBlog(BlogCreate):
-    creator: Optional[ShowUser] = None   # 🔥 THIS FIXES 500 ERROR
+    creator: Optional[ShowUser] = None   
 
     model_config = {
         "from_attributes": True
     }
+
+class Login(BaseModel):
+    username:str
+    password:str
+
+
+class Token(BaseModel):
+    access_token:str
+    token_type:str 
+
+class TokenData(BaseModel):
+    email:Optional[str]=None
