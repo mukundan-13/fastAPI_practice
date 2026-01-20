@@ -6,6 +6,7 @@ class BlogCreate(BaseModel):
     title: str
     body: str
 
+    #sqlalchemy gives obj(.) but pydantic expects dict,so for type conv
     model_config = {
         "from_attributes": True
     }

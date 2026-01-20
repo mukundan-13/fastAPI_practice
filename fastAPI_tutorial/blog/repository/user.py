@@ -2,19 +2,20 @@ from fastapi import HTTPException,status
 from sqlalchemy.orm import Session
 from .. import models,schemas
 from ..hashing import Hash
+from ..utils.email import sendEmail
 
 
-def createUser(request:schemas.BlogCreate,db:Session):
+async def createUser(request:schemas.BlogCreate,db:Session):
      # remove leading/trailing spaces and truncate string to 72 characters
     safe_password = request.password.strip()[:72]
 
     # hash with bcrypt
 
-    new_user = models.User(
-        name=request.name, email=request.email, password=Hash.bcrypt(request.password))
+    new_user = models.User(name=request.name, email=request.email, password=Hash.bcrypt(request.password))
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
+    await sendEmail(request.email)
     return new_user
     return {"id": new_user.id, "name": new_user.name, "email": new_user.email}
 

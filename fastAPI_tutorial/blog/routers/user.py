@@ -9,8 +9,8 @@ router = APIRouter(
 
 
 @router.post("/", response_model=schemas.ShowUser)
-def create_user(request: schemas.User, db: Session = Depends(database.get_db)):
-    return user.createUser(request,db)
+async def create_user(request: schemas.User, db: Session = Depends(database.get_db)):
+     return await user.createUser(request,db)
 
 
 @router.get("/{id}", response_model=schemas.ShowUser)
